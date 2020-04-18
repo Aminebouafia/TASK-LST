@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+      <style> #bouafia img {width:100px;height:100px;border-radius: 50%;box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); margin-bottom: 20px;}
+           
+      #bouafia ul{list-style:none}
+      #bouafia li {text-transform: uppercase;letter-spacing: 2px; font-family:"Lato"; padding-bottom: 10px;}
+       body { background: rgb(243,244,247);
+background: linear-gradient(135deg, rgba(243,244,247,1) 30%, rgba(202, 204, 209, 1) 100%);}
+#bouafia ul li:first-child {color:#0a8ea0; margin-bottom: 20px; margin-top: 20px;}
+hr {
+    border: 0;
+    height: 1px;
+    background: #0a8ea0;
+    background-image: linear-gradient(to right, #ccc, #0a8ea0, #ccc);
+}
+       </style>
+    <title>Exchange Participants</title>
+  </head>
+  <body>
+  <center>  <div id="bouafia">
+       
+    </div>
+   
+<script>
+ 
+ 
+    const api_url = 'https://sheet.best/api/sheets/485390d2-73da-4961-aab9-14582f73bc1e';
+    
+    async function getEPs (){
+const response = await fetch(api_url);
+const data = await response.json();
+console.table(data);
+
+
+var len = data.length;
+
+if (len != 0)
+{
+	var table = [];
+	var j = 0;
+	var doc = document.getElementById("bouafia");
+
+	for (var i = 0; i < len; i++)
+	{
+		if (! ( table.includes(data[i].manager) ) )
+		{
+			table[j] = data[i].manager;
+			j++;
+
+			var managerid = data[i].manager;
+
+			var node_manager = document.createElement("li");
+			var node_image = document.createElement("li");
+			var image = document.createElement("img");
+			image.src = data[i].manager_cover_photo;
+
+			var textnode_manager = document.createTextNode(data[i].manager);
+			node_manager.style.fontWeight = "bold";
+
+			node_manager.appendChild(textnode_manager);
+			node_image.appendChild(image);
+
+			managerid = managerid.replace(/\s/g, '');
+
+			var ul = document.createElement("ul");
+			ul.setAttribute("id", managerid);
+			ul.appendChild(node_manager);
+			ul.appendChild(node_image);
+			doc.appendChild(ul);
+
+			var hr = document.createElement("hr");
+			doc.appendChild(hr);
+		}
+	}
+
+	for (var i = 0; i < len; i++)
+	{
+		var managerid = data[i].manager;
+		managerid = managerid.replace(/\s/g, '');
+
+		var ul = document.getElementById(managerid);
+
+		var node = document.createElement("li");
+		var textnode = document.createTextNode(data[i].name+" "+data[i].surname+" / +216"+data[i].phone_number+" / "+data[i].email+" / "+data[i].university+" "+data[i].year_of_study);
+		node.appendChild(textnode);
+		if (data[i].gender == "male") {
+			node.setAttribute("style", "color: #037ef3");
+		}
+		else
+		{
+			node.setAttribute("style", "color: #f85a40");
+		}
+		ul.appendChild(node);
+	}
+}
+}
+
+getEPs();
+
+</script>
+</center>
+</body>
+</html>
